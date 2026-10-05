@@ -1,0 +1,16 @@
+github_organization = "my-org"
+repository_name      = "payments-service"
+
+# Keep this public on a free org — rulesets don't apply to private repos
+# there, and the failure is silent. See ../docs/plan-requirements.md.
+repository_visibility = "public"
+
+# Set to false if your token lacks the `workflow` scope. Read the variable
+# description first — a required check that never reports blocks the demo
+# PR forever instead of failing it.
+seed_ci_workflow = true
+
+# Leave empty on the first apply. After 01-teams-and-permissions has
+# created the team, set this and apply again — a CODEOWNERS file naming a
+# team that doesn't exist yet is silently ignored by GitHub.
+# codeowners = ["@my-org/security"]

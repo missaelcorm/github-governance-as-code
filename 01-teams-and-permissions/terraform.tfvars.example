@@ -1,0 +1,33 @@
+github_organization = "my-org"
+
+teams = {
+  platform-engineering = {
+    description = "Owns internal developer platform and governance tooling"
+    privacy     = "closed"
+    members = {
+      "alice-oss" = { role = "maintainer" }
+      "bob-dev"   = { role = "member" }
+    }
+  }
+
+  security = {
+    description = "Application and infrastructure security"
+    privacy     = "secret"
+    members = {
+      "carol-sec" = { role = "maintainer" }
+    }
+  }
+}
+
+team_repository_access = {
+  platform_on_payments = {
+    team_slug  = "platform-engineering"
+    repository = "payments-service"
+    permission = "admin"
+  }
+  security_on_payments = {
+    team_slug  = "security"
+    repository = "payments-service"
+    permission = "maintain"
+  }
+}

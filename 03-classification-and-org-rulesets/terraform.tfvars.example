@@ -1,0 +1,11 @@
+github_organization = "my-org"
+
+# Team slug, not a numeric ID — resolved by data.tf. The team must exist
+# already, so apply ../01-teams-and-permissions first.
+bypass_team_slug = "security"
+
+# "active" is right on every plan, including free. On a free org the
+# rulesets are created and target correctly but aren't enforced until the
+# org is on GitHub Team — see ../docs/plan-requirements.md. "evaluate"
+# (dry run) is Enterprise Cloud only.
+# ruleset_enforcement = "active"

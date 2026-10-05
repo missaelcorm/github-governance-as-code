@@ -1,0 +1,8 @@
+github_organization    = "my-org"
+repository_name        = "payments-service"
+required_review_count  = 2
+required_status_checks = ["ci/build", "ci/test", "security/sast"]
+
+# Team slug, not a numeric ID — resolved by data.tf. The team must exist
+# already, so apply ../01-teams-and-permissions first. Omit for no bypass.
+# bypass_team_slug = "security"
