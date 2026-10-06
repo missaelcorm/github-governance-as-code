@@ -9,7 +9,7 @@ change a property in the GitHub UI to watch the rules change.
 
 1. Open [colab.research.google.com](https://colab.research.google.com).
 2. **File → Open notebook → GitHub**, paste
-   `https://github.com/missaelcorm/github-governance-as-code`, and pick
+   `https://github.com/missaelcorm/protect-github-repos-at-scale`, and pick
    `notebooks/github-governance-demo.ipynb`.
 3. In the **Configuration** cell (step 2), set `GITHUB_ORG` — and `REPO_URL` if
    you're running a fork. That's the only edit needed.
