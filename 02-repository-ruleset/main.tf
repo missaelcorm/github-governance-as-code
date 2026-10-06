@@ -19,11 +19,9 @@ resource "github_repository_ruleset" "protect_default_branch" {
     }
   }
 
-  # Deliberately a MODEST baseline: block the destructive stuff, require a
-  # review and green CI. Linear history, signed commits and code-owner review
-  # are left to module 03's regulated tier, so that reclassifying a repo
-  # visibly adds something. A repo ruleset that already requires everything
-  # makes the org-level tiers look like they do nothing.
+  # A modest baseline on purpose. Linear history, signed commits and
+  # code-owner review are left to module 03's regulated tier, so that
+  # reclassifying a repo visibly adds something.
   rules {
     deletion         = true # block branch deletion
     non_fast_forward = true # block force-push
@@ -45,13 +43,12 @@ resource "github_repository_ruleset" "protect_default_branch" {
     }
   }
 
-  # Iterates over the data source's instances, which is 0 or 1 — so this
-  # emits a bypass_actors block only when bypass_team_slug was set.
+  # The data source has 0 or 1 instances, so this emits a bypass_actors
+  # block only when bypass_team_slug was set.
   dynamic "bypass_actors" {
     for_each = data.github_team.bypass
     content {
-      # The data source exposes the team ID as a string; actor_id is
-      # typed as a number, hence the conversion.
+      # The data source returns the team ID as a string; actor_id is a number.
       actor_id    = tonumber(bypass_actors.value.id)
       actor_type  = "Team"
       bypass_mode = "pull_request"

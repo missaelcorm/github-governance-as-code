@@ -5,12 +5,10 @@ single repo: required reviews, required status checks, bypass actors, no
 force-push or deletion — the direct Terraform replacement for classic
 branch protection.
 
-It's deliberately a *modest* baseline. Linear history, signed commits and
-code-owner review are left to module `03`'s regulated tier, and reviews are
-set to 1 rather than 2. Rules aggregate across every matching ruleset and
-the strictest value wins, so a maximally strict ruleset here would mask the
-org-level tiers completely — reclassify a repo and nothing visibly
-changes.
+A modest baseline on purpose: linear history, signed commits and code-owner
+review are left to module `03`'s regulated tier, and reviews are 1 rather
+than 2. The strictest value wins across matching rulesets, so a strict
+ruleset here would mask the org-level tiers entirely.
 
 ## Why this doesn't scale
 
@@ -47,11 +45,8 @@ one condition on free: they only apply to **public** repositories. On a
 free org, a ruleset on a private repo applies successfully and protects
 nothing.
 
-That makes this module the only protection a free org gets at all: module
-`03`'s organization rulesets can't be created without GitHub Team.
-Awkwardly, the module this talk argues against is the only one that works
-on a free plan. It's still fine to show — scaling, not enforcement, was
-always the problem with it.
+That makes this the only protection a free org gets: module `03`'s
+organization rulesets need GitHub Team.
 
 Every rule used here works on any plan. See
 [`../docs/plan-requirements.md`](../docs/plan-requirements.md) for the

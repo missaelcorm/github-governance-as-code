@@ -14,12 +14,10 @@ full version lives.
 
 ## Usage
 
-This is the one module that really wants a `terraform.tfvars`. The others
-take a handful of scalars you can export as `TF_VAR_*` (see the top-level
-README); `teams` here is a map of objects, and expressing that through an
-environment variable means hand-writing JSON. A file is better anyway for
-this particular input — who is on which team is exactly the kind of change
-that should show up as a reviewable diff.
+This is the one module that wants a `terraform.tfvars`: `teams` is a map of
+objects, which is awkward to express as a `TF_VAR_*` environment variable.
+It's the better home for this input anyway — team membership is exactly the
+kind of change that should show up as a reviewable diff.
 
 ```bash
 cp terraform.tfvars.example terraform.tfvars
@@ -53,15 +51,9 @@ Cloud only, which is why they're not used here. See
   resources/variables on purpose: adding someone to a team is a people
   decision, granting a team access to a repo is an architecture decision.
   Keeping them apart makes diffs in PRs easier to reason about.
-- **Apply this before modules `02` and `03`.** Both grant ruleset bypass
-  rights to a team, and both resolve it with a `github_team` data source
-  keyed by slug — so the team has to exist first or they fail at plan
-  time with `Not Found`. That's the intended failure: a ruleset whose
-  bypass list silently points at nothing is worse than one that won't
-  plan.
-- `team_ids` and `team_slugs` are both exported. Nothing in this repo
-  consumes `team_ids` any more — looking the team up by slug beats
-  copying a numeric ID between states, and survives a team being deleted
-  and recreated. It's still exported because team IDs are hard to find
-  by hand and anything outside Terraform that needs one has to get it
-  somewhere.
+- **Apply this before modules `02` and `03`.** Both resolve their bypass
+  team by slug with a `github_team` data source, so the team has to exist
+  first or they fail at plan time with `Not Found`.
+- `team_ids` and `team_slugs` are both exported. The modules here use
+  slugs; `team_ids` is there for anything outside Terraform that needs a
+  numeric ID.

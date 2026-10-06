@@ -8,19 +8,14 @@ than as a settings page.
 |-----------------|------------------------------------------------------------|
 | `show-rules.sh` | A repo's custom properties, and the rules they earn it     |
 
-Its output has three parts: the properties set on the repo, the rules
-**grouped by the ruleset that contributes them**, and the strictest value
-in effect for the ones that take parameters.
+Output has three parts: the repo's properties, the rules grouped by the
+ruleset that contributes them, and the strictest value in effect for the
+rules that take parameters.
 
-The grouping matters because the rules API identifies a ruleset by ID and
-reports its `ruleset_source` as the org or repo that *owns* it, not the
-ruleset's own name — so raw output labels every org-level rule
-`Organization ruleset "my-org"` and you can't tell `baseline-protection`
-from `regulated-repo-protection`. The script looks the names up. Listing
-org rulesets needs `admin:org`; without it you get bare IDs.
+The same rule type under two rulesets is normal — GitHub applies all of
+them and takes the strictest value, which is what the last block shows.
 
-Seeing the same rule type under two rulesets is normal, not a bug — that's
-aggregation, and the "strictest values" block is that merge resolved.
+Naming the rulesets needs `admin:org`; without it you get bare ruleset IDs.
 
 Needs the [GitHub CLI](https://cli.github.com/) authenticated
 (`gh auth login`). Reading rules needs repo read access; the demo's
@@ -52,16 +47,14 @@ properties** → set `tier` to `regulated` → save.
 ./show-rules.sh my-org/payments-service
 ```
 
-More rules now, and watch for two kinds of change. New rule *types*
-(`required_signatures`, `required_linear_history`) and rule types that were
-already there but got **stricter** — `pull_request` appears in both runs;
-what changed is that it went from one approval to two plus a code owner.
-The second kind is easy to miss, which is what the "strictest values" block
-is for.
+More rules now. Two kinds of change to look for: new rule types
+(`required_signatures`, `required_linear_history`), and rules that were
+already there but got stricter — `pull_request` appears both times, and
+went from one approval to two plus a code owner.
 
 Reload the pull request from step 1 — same PR, nobody pushed to it, no
-`terraform apply` ran — and the merge box now asks for two approvals, a
-code owner, and three checks.
+`terraform apply` ran — and it now asks for two approvals, a code owner,
+and three checks.
 
 That's the whole argument. The rules changed because the repo's
 classification changed, and the ruleset that did it has never heard of
@@ -83,9 +76,9 @@ JSON
 gh pr create --repo my-org/payments-service --fill
 ```
 
-The UI is usually the better choice on stage: it makes the point that
-classification is a thing anyone can set — from a settings page, an
-onboarding pipeline, or Terraform — while enforcement stays centralized.
+The UI is usually better on stage: it makes the point that classification
+is something anyone can set — a settings page, an onboarding pipeline, or
+Terraform — while enforcement stays centralized.
 
 ## Two things that look like failures and aren't
 

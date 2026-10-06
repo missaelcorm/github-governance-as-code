@@ -17,10 +17,8 @@ variable "default_branch" {
 
 variable "repository_visibility" {
   description = <<-DESC
-    Keep this "public" unless your org is on GitHub Team or Enterprise.
-    On a free org, rulesets only apply to public repos — a private repo
-    here means module 02 applies cleanly and protects nothing, with no
-    error anywhere. See ../docs/plan-requirements.md.
+    Keep this "public" on a free org: rulesets only apply to public repos
+    there, and a private repo is protected by nothing with no error shown.
   DESC
   type        = string
   default     = "public"
@@ -34,12 +32,11 @@ variable "repository_visibility" {
 variable "seed_ci_workflow" {
   description = <<-DESC
     Commit a workflow whose job names match the status checks the rulesets
-    require. Leave it true: a required check that never reports blocks a PR
-    on "Expected" forever instead of failing it, which looks like a broken
-    demo rather than a working rule.
+    require. Without it, those checks never report and pull requests sit on
+    "Expected" forever rather than failing.
 
-    Set it false if your token lacks the `workflow` scope, which GitHub
-    requires for any file under .github/workflows/.
+    Needs the `workflow` token scope, which GitHub requires for any file
+    under .github/workflows/.
   DESC
   type        = bool
   default     = true
@@ -50,17 +47,10 @@ variable "codeowners" {
     Owners for CODEOWNERS, e.g. ["@my-org/platform-engineering"]. Empty
     writes no file.
 
-    Safe to set on the first apply, before the team exists: CODEOWNERS is
-    just a file, the commit succeeds, and GitHub flags the entry as invalid
-    until the named team exists AND has write access to the repo. It starts
-    working on its own once 01-teams-and-permissions has run — the file
-    doesn't need rewriting, so no second apply here.
+    The named team needs write access to the repo to count as an owner.
+    Check with: gh api repos/<org>/<repo>/codeowners/errors
 
-    Check what GitHub makes of it:
-      gh api repos/<org>/<repo>/codeowners/errors
-
-    Note a code owner can't approve their own pull request, so don't list
-    only yourself or the demo PR becomes unmergeable.
+    A code owner can't approve their own pull request.
   DESC
   type        = list(string)
   default     = []

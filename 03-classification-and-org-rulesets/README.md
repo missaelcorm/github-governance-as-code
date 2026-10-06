@@ -28,15 +28,11 @@ prerequisite: organization rulesets can't be created on a free plan, and
 403 Upgrade to GitHub Team to enable this feature.
 ```
 
-The line falls in an interesting place, though. `properties.tf` —
-organization custom properties — works on a **free** org. So you can
-define and use the classification schema for nothing; it's only the
-rulesets that act on those values that need Team. Free gets you
-classification without enforcement, which is the half with no security
-benefit on its own.
+`properties.tf` is the exception: organization custom properties work on a
+free org. Only the rulesets that act on those values need Team.
 
-`ruleset_enforcement` is exposed if you want the rulesets `disabled`
-while iterating. `evaluate` (dry run) is Enterprise Cloud only.
+`ruleset_enforcement` is exposed if you want the rulesets `disabled` while
+iterating. `evaluate` (dry run) is Enterprise Cloud only.
 
 See [`../docs/plan-requirements.md`](../docs/plan-requirements.md) for the
 full matrix and the Enterprise-only rules this module avoids.

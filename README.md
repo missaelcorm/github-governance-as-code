@@ -39,16 +39,15 @@ way rather than living in one big apply.
 
 ### What your plan changes
 
-**Organization rulesets need GitHub Team.** On free, module `03` fails at
-apply with `403 Upgrade to GitHub Team to enable this feature`. Worth
-knowing precisely where the line falls, though: organization **custom
-properties** work fine on free, so you can build and use the whole
-classification layer there. It's only the org rulesets that consume those
-values that are gated. Free gets you classification without enforcement.
+**Organization rulesets need GitHub Team.** On free, module `03` fails with
+`403 Upgrade to GitHub Team to enable this feature`. Organization **custom
+properties** do work on free, so the classification layer is available
+there — it's only the org rulesets that consume those values that are
+gated.
 
-**On free, rulesets only apply to public repos.** A repository ruleset on
-a private repo in a free org applies successfully, shows up in the API,
-and protects nothing — silently. Keep the demo repos public.
+**On free, rulesets only apply to public repos.** A ruleset on a private
+repo applies successfully, shows up in the API, and protects nothing, with
+no error. Keep the demo repos public.
 
 Three things this repo deliberately doesn't use because they're
 Enterprise Cloud only: custom repository roles, the *restrict commit
@@ -94,10 +93,9 @@ export TF_VAR_bypass_team_slug="security"
 export DEMO_REPO="${TF_VAR_github_organization}/${TF_VAR_repository_name}"
 ```
 
-`terraform.tfvars.example` is still there in each module if you'd rather
-commit your inputs to a file and review them in a PR — which is the
-better answer for anything real. The exports are for getting through the
-demo without eight copies of your org name.
+`terraform.tfvars.example` is in each module if you'd rather commit your
+inputs to a file and review them in a PR, which is the better answer for
+anything real.
 
 ## Quick start
 

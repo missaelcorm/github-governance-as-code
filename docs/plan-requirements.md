@@ -7,13 +7,11 @@ The short version:
   **GitHub Team** or Enterprise Cloud. Organization rulesets cannot be
   created on a free plan at all.
 
-There's a wrinkle worth knowing, because it's genuinely useful and it's
-the thing that misled us: **organization custom properties work on a free
-org.** You can define a classification schema, tag every repo in the org,
+Worth knowing where the line falls: **organization custom properties work
+on a free org.** You can define a classification schema, tag every repo,
 and read the values back. What you can't do on free is create the
-organization rulesets that *act* on those values. So free gets you
-classification without enforcement — half the pattern, and the half that
-produces no security benefit on its own.
+organization rulesets that *act* on those values. Free gets you
+classification without enforcement.
 
 ## Compatibility matrix
 
@@ -44,33 +42,21 @@ any plan, so `require_code_owner_review = true` is accepted. It only means
 something if the repo actually has a `CODEOWNERS` file naming a team that
 exists.
 
-### How we know
+### Verified on a free org
 
-Two rows were established by applying this repo against a real free
-organization:
+Applying this repo against a real free organization: the custom properties
+in `properties.tf` applied fine, and both org rulesets failed with
 
-- **Organization custom properties: yes.** The three
-  `github_organization_custom_properties` resources in `properties.tf`
-  applied without complaint.
-- **Organization rulesets: no.** Both org rulesets failed, and the error
-  is unambiguous:
+```
+Error: POST https://api.github.com/orgs/<org>/rulesets:
+403 Upgrade to GitHub Team to enable this feature.
+```
 
-  ```
-  Error: POST https://api.github.com/orgs/<org>/rulesets:
-  403 Upgrade to GitHub Team to enable this feature.
-  ```
+The UI is more permissive here than the API, so trust `terraform apply`
+over a settings page when working out what your plan allows.
 
-  It's a hard 403 at creation. An earlier version of this document claimed
-  org rulesets could be created on free and merely weren't enforced —
-  that was wrong, and if you read it, this is the correction. The GitHub
-  UI appears more permissive here than the API is, which is a good reason
-  to trust `terraform apply` over a settings page when working out what
-  your plan allows.
-
-Everything else in the table is from GitHub's published plan tiers rather
-than from our own testing. Given that one inherited claim already turned
-out to be wrong, treat the ❌ rows you depend on as worth five minutes of
-verification against your own org before you rely on them on stage.
+The rest of the table is from GitHub's published plan tiers, not our own
+testing — worth verifying the rows you depend on before you rely on them.
 
 ## The three Enterprise-only things, and what to do instead
 
@@ -114,22 +100,14 @@ usually the actual goal.
 **On Team or Enterprise Cloud**, everything works as documented. This is
 what the talk assumes.
 
-**On a free org**, module `03` will fail with the 403 above. You have two
-honest options:
+**On a free org**, module `03` fails with the 403 above. Two options:
 
-- **Upgrade the demo org to Team.** It's the cheapest paid tier and it's
-  what the pattern is designed for. If you're demoing the pattern, do
-  this — there is no workaround that preserves the point.
-- **Demo the classification half only, and say so.** Apply
-  `properties.tf` (which works on free), tag repos, and show that the
-  classification layer is free and easy. Then show module `02`'s
-  repository-level ruleset — enforced on free public repos — as what
-  you're replacing. You can describe the join between them, but you can't
-  show it.
-
-What you can't do is show the payoff on a free org. The whole pattern is
-classification *driving* enforcement, and the mechanism that connects
-them is the one thing free doesn't have.
+- **Upgrade the demo org to Team.** The cheapest paid tier, and what the
+  pattern needs. There's no workaround that preserves the point.
+- **Show the classification half only.** `properties.tf` works on free, so
+  you can tag repos and show the classification layer, with module `02`'s
+  repo-level ruleset as what you're replacing. You can describe the join
+  between them, not show it.
 
 ## Repository visibility
 
@@ -138,12 +116,9 @@ Private repos on a free org aren't in scope for rulesets at all.
 
 So on free: **make the demo repos public.** If `payments-service` is
 private, module `02` applies successfully, `terraform plan` stays clean,
-the ruleset exists in the API, and nothing is protected. That failure is
-silent, which makes it worth checking deliberately.
-
-`00-setup` defaults `repository_visibility` to `public` for this reason,
-and its `rulesets_will_apply` output restates it — though that output can
-only see the repo's visibility, not your org's plan.
+the ruleset exists in the API, and nothing is protected — with no error
+anywhere. `00-setup` defaults `repository_visibility` to `public` for this
+reason.
 
 A quick way to confirm what's actually in effect for a repo, whatever your
 plan:

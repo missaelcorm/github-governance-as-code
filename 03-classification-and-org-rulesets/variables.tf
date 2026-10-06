@@ -5,12 +5,9 @@ variable "github_organization" {
 
 variable "bypass_team_slug" {
   description = <<-DESC
-    Slug of the team allowed to bypass these org rulesets (e.g. security
-    engineering). Resolved to a numeric team ID by the data source in
-    data.tf, so you give it a name rather than an ID.
-
-    The team has to exist before this module is applied — apply
-    01-teams-and-permissions first, with this slug among its teams.
+    Slug of the team allowed to bypass these org rulesets. Resolved to a
+    numeric ID in data.tf, so the team must already exist — apply
+    01-teams-and-permissions first.
   DESC
   type        = string
   default     = "security"

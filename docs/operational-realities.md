@@ -100,24 +100,15 @@ surviving.
 A governance control that exists but doesn't enforce is worse than no
 control, because it reads as covered on a dashboard.
 
-GitHub's plan limits come in two flavours, and only one of them is safe.
-Organization rulesets on a free org are the safe kind: they fail loudly
-at creation with a 403, so you find out immediately. The dangerous kind is
-a **repository ruleset on a private repo in a free org** — rulesets don't
-apply to private repos on free, so the ruleset is created, `terraform
-plan` stays clean, the API confirms it exists, and nothing is protected.
-No error anywhere. And the repos you'd most want protected are the ones
+Some plan limits fail loudly — organization rulesets on a free org return a
+403 at creation, so you find out immediately. The dangerous ones are
+silent: a **repository ruleset on a private repo in a free org** is
+created, `terraform plan` stays clean, the API confirms it exists, and
+nothing is protected. And the repos you'd most want protected are the ones
 most likely to be private.
 
-That silent case won't be caught by the drift detection in §1, because
-there's no drift to detect. Verify it out-of-band instead: push something
-that should be rejected and confirm it is. Once per policy change is
-enough; the point is not to learn it during an audit.
-
-The broader lesson is to find out where your plan's line falls before you
-design around it, and to trust the API over the UI when you do. The GitHub
-UI will let you start creating an organization ruleset on a free org; the
-API returns 403. We documented the permissive reading first and had to
-correct it.
+The drift detection in section 1 won't catch that, because there's no drift.
+Verify out-of-band instead: push something that should be rejected and
+confirm it is, once per policy change.
 
 Full matrix: [`plan-requirements.md`](./plan-requirements.md).

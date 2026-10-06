@@ -8,7 +8,7 @@ output "repository_url" {
 }
 
 output "rulesets_will_apply" {
-  description = "Reminder, not a real check: it can see the repo's visibility but not your org's plan."
+  description = "Based on visibility alone — it can't see your org's plan."
   value = (github_repository.demo.visibility == "public"
     ? "yes — public repo, applies on every plan"
   : "only on GitHub Team or Enterprise Cloud — rulesets skip non-public repos on free")

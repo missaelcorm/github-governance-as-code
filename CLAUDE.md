@@ -17,7 +17,7 @@ that's why `scripts/` holds one script and not four.
 ## Layout
 
 Four **independent Terraform root modules**, each its own state, split by
-change frequency/blast-radius (`docs/operational-realities.md` §2), not by
+change frequency/blast-radius (`docs/operational-realities.md` section 2), not by
 resource type:
 
 - `00-setup/` — creates the one disposable demo repository everything else
