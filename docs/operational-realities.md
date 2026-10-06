@@ -112,3 +112,50 @@ Verify out-of-band instead: push something that should be rejected and
 confirm it is, once per policy change.
 
 Full matrix: [`plan-requirements.md`](./plan-requirements.md).
+
+## 6. Custom properties are an inventory, not just a ruleset selector
+
+The schema in module `03` exists to target rulesets, but that's the smaller
+half of what it's worth. It's also the only place in GitHub where you can
+attach structured, queryable metadata to every repository in an org and get
+it back in one API call:
+
+```bash
+# Who owns what
+gh api "orgs/$ORG/properties/values" --paginate --jq '
+  .[] | [.repository_name,
+         ([.properties[] | select(.property_name == "owning_team") | .value]
+          | first // "UNOWNED")] | @tsv'
+```
+
+No cloning, no per-repo config file to drift, no spreadsheet. The same data
+filters the repo list in the org UI, so it's useful to people who will never
+call an API.
+
+Worth carrying beyond `tier`: `service_name`, `owning_team`,
+`data_classification`, lifecycle (active / deprecated / archived), on-call
+rota, cost centre. Audit questions like "which PCI repos have no owner" stop
+being a week of asking around.
+
+### The cost: coverage
+
+None of that is true until nearly every repo is tagged, which is two
+separate jobs:
+
+- **New repos** — part of onboarding, not an afterthought. Whatever creates
+  repos should set properties at creation, or the backlog starts growing
+  again immediately.
+- **Existing repos** — a one-time backfill, and the part people
+  underestimate. Bulk property writes are bulk API writes; see section 4
+  before doing it in one pass.
+
+### Defaults make coverage look better than it is
+
+`required = true` with a `default_value` means every repo reports a value
+whether or not anyone chose it. For enforcement that's the point — `tier`
+defaults to `standard` so every repo has a floor from day one. For
+reporting it's a liar: 100% populated, mostly unanswered.
+
+So decide per property. `owning_team` has no default on purpose — blank
+means "nobody has told us", which is a number you can drive to zero and
+report honestly. A defaulted `owning_team` would just be wrong quietly.
