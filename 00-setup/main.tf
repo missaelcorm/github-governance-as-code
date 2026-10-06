@@ -3,7 +3,7 @@
 
 resource "github_repository" "demo" {
   name        = var.repository_name
-  description = "Demo repository for the GitHub governance-as-code talk. Safe to delete."
+  description = "Demo repository for the \"Protect your GitHub Repositories at scale with Terraform\" talk. Safe to delete."
   visibility  = var.repository_visibility
 
   # Also gives the repo a default branch, which `~DEFAULT_BRANCH` in every

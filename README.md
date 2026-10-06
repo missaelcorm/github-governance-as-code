@@ -1,7 +1,6 @@
-# GitHub governance as code
+# Protect your GitHub Repositories at scale with Terraform
 
-Reference repository for the talk **"GitHub governance as code: from
-click-ops to custom properties + org rulesets."** Everything here is real,
+Reference repository for the talk **"Protect your GitHub Repositories at scale with Terraform."** Everything here is real,
 apply-able Terraform (against `integrations/github`), not pseudocode —
 it's meant to keep working as a resource after the talk, not just during
 the 30 minutes on stage.

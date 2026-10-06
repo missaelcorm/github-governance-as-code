@@ -4,8 +4,8 @@ Guidance for Claude Code when working in this repository.
 
 ## What this repo is
 
-Reference/demo repo for a 30-minute conference talk on GitHub governance
-as code (Terraform + `integrations/github`). It has two jobs: be a working
+Reference/demo repo for a 30-minute conference talk, **"Protect your GitHub Repositories at scale with Terraform"**
+(Terraform + `integrations/github`). It has two jobs: be a working
 live-demo environment, and remain a correct standalone reference people
 clone afterwards.
 
