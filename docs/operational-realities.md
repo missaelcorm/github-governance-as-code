@@ -46,7 +46,7 @@ several organizations and hundreds of repos, state layout becomes a
 blast-radius decision:
 
 - Split state by **change frequency and risk**, not just by resource
-  type. This repo's three modules aren't an accident: team membership
+  type. This repo's four modules aren't an accident: team membership
   changes weekly and is low-risk if wrong; org rulesets change rarely and
   are high-risk if wrong. Different cadence and different risk profile
   argue for different state files, different review requirements, and

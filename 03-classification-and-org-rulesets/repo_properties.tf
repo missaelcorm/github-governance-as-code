@@ -1,9 +1,10 @@
 # --- Example: classifying a repo via Terraform -----------------------------
 #
 # Classification doesn't have to happen in Terraform — that's rather the
-# point of the pattern — the talk sets the value from the GitHub UI, and an
-# onboarding pipeline is just as valid. But
-# it's equally valid to manage property values here when a repo's
+# point of the pattern. The talk sets the value from the GitHub UI, and an
+# onboarding pipeline would do just as well.
+#
+# Managing property values here is equally valid, though, when a repo's
 # classification is itself something you want reviewed via pull request.
 #
 # Leave this resource commented out before the live demo — the whole

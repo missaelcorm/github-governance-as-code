@@ -63,7 +63,7 @@ Secrets, because `%%bash` can't reach that API. Don't add Python wrappers,
 
 - Run `terraform fmt -recursive` before committing any `.tf` change.
 - Comments explain the **GitHub-specific gotcha**, not the HCL. Keep them
-  short. Three that matter most:
+  short. The ones that matter most:
   - In `rules {}`, `deletion = true` / `non_fast_forward = true` mean that
     action is **restricted**, not permitted. Easy to misread.
   - The two org rulesets in `03` are **additive** — GitHub merges every
