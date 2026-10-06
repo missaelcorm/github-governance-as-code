@@ -5,14 +5,15 @@ talk demo in a browser: installs Terraform and `gh`, applies all four
 modules against your organization, then has you open a pull request and
 change a property in the GitHub UI to watch the rules change.
 
-## Importing it
+## Opening it
 
-1. Open [colab.research.google.com](https://colab.research.google.com).
-2. **File → Open notebook → GitHub**, paste
-   `https://github.com/missaelcorm/protect-github-repos-at-scale`, and pick
-   `notebooks/github-governance-demo.ipynb`.
-3. In the **Configuration** cell (step 2), set `GITHUB_ORG` — and `REPO_URL` if
-   you're running a fork. That's the only edit needed.
+[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/missaelcorm/protect-github-repos-at-scale/blob/main/notebooks/github-governance-demo.ipynb)
+
+That loads the notebook straight from `main`. Your edits aren't saved back to
+the repo — use **File → Save a copy in Drive** to keep them.
+
+Then set `GITHUB_ORG` in the **Configuration** cell (step 2), and `REPO_URL`
+if you're running a fork. That's the only edit needed.
 
 ## The token goes in Colab Secrets
 

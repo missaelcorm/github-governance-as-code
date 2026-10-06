@@ -1,9 +1,11 @@
 # Protect your GitHub Repositories at scale with Terraform
 
-Reference repository for the talk **"Protect your GitHub Repositories at scale with Terraform."** Everything here is real,
-apply-able Terraform (against `integrations/github`), not pseudocode —
-it's meant to keep working as a resource after the talk, not just during
-the 30 minutes on stage.
+[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/missaelcorm/protect-github-repos-at-scale/blob/main/notebooks/github-governance-demo.ipynb)
+
+Reference repository for the talk of the same name. Everything here is
+real, apply-able Terraform (against `integrations/github`), not
+pseudocode — it's meant to keep working as a resource after the talk, not
+just during the 30 minutes on stage.
 
 ## How this maps to the talk
 
@@ -16,7 +18,7 @@ the 30 minutes on stage.
 | 5. Custom properties + org rulesets (**the main pattern**, incl. live demo) | [`03-classification-and-org-rulesets/`](./03-classification-and-org-rulesets) |
 | 6. Operational realities | [`docs/operational-realities.md`](./docs/operational-realities.md) |
 | Live demo scripts | [`scripts/`](./scripts) |
-| Interactive version of the whole demo, in a browser | [`notebooks/`](./notebooks) |
+| Interactive version of the whole demo, in a browser | [`notebooks/`](./notebooks) · [open in Colab](https://colab.research.google.com/github/missaelcorm/protect-github-repos-at-scale/blob/main/notebooks/github-governance-demo.ipynb) |
 | What your GitHub plan does and doesn't allow | [`docs/plan-requirements.md`](./docs/plan-requirements.md) |
 
 Each numbered directory is its own Terraform root module with its own
