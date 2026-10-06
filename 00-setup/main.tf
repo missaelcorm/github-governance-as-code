@@ -86,7 +86,9 @@ resource "github_repository_file" "ci_workflow" {
   YAML
 }
 
-# Written only when var.codeowners is set — see that variable for why.
+# Written only when var.codeowners is set. Safe to write before the team it
+# names exists — it's a plain file, and GitHub just reports the entry as
+# invalid (see /codeowners/errors) until the team is there with write access.
 resource "github_repository_file" "codeowners" {
   count = length(var.codeowners) > 0 ? 1 : 0
 

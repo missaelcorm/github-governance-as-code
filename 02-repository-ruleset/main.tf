@@ -19,16 +19,18 @@ resource "github_repository_ruleset" "protect_default_branch" {
     }
   }
 
+  # Deliberately a MODEST baseline: block the destructive stuff, require a
+  # review and green CI. Linear history, signed commits and code-owner review
+  # are left to module 03's regulated tier, so that reclassifying a repo
+  # visibly adds something. A repo ruleset that already requires everything
+  # makes the org-level tiers look like they do nothing.
   rules {
-    deletion                = true # block branch deletion
-    non_fast_forward        = true # block force-push
-    required_linear_history = true # no merge commits
+    deletion         = true # block branch deletion
+    non_fast_forward = true # block force-push
 
     pull_request {
       required_approving_review_count = var.required_review_count
-      require_code_owner_review       = true
       dismiss_stale_reviews_on_push   = true
-      require_last_push_approval      = true
     }
 
     required_status_checks {

@@ -19,8 +19,8 @@ variable "repository_visibility" {
   description = <<-DESC
     Keep this "public" unless your org is on GitHub Team or Enterprise.
     On a free org, rulesets only apply to public repos — a private repo
-    here means every later module applies cleanly and protects nothing,
-    with no error. See ../docs/plan-requirements.md.
+    here means module 02 applies cleanly and protects nothing, with no
+    error anywhere. See ../docs/plan-requirements.md.
   DESC
   type        = string
   default     = "public"
@@ -47,13 +47,20 @@ variable "seed_ci_workflow" {
 
 variable "codeowners" {
   description = <<-DESC
-    Owners for CODEOWNERS, e.g. ["@my-org/security"]. Empty writes no file.
+    Owners for CODEOWNERS, e.g. ["@my-org/platform-engineering"]. Empty
+    writes no file.
 
-    Empty by default because of an ordering trap: the rulesets require code
-    owner review, but a CODEOWNERS file naming a team that doesn't exist yet
-    is silently ignored. Apply this, apply 01-teams-and-permissions, then set
-    this and apply again. Note a code owner can't approve their own PR, so
-    don't list only yourself.
+    Safe to set on the first apply, before the team exists: CODEOWNERS is
+    just a file, the commit succeeds, and GitHub flags the entry as invalid
+    until the named team exists AND has write access to the repo. It starts
+    working on its own once 01-teams-and-permissions has run — the file
+    doesn't need rewriting, so no second apply here.
+
+    Check what GitHub makes of it:
+      gh api repos/<org>/<repo>/codeowners/errors
+
+    Note a code owner can't approve their own pull request, so don't list
+    only yourself or the demo PR becomes unmergeable.
   DESC
   type        = list(string)
   default     = []

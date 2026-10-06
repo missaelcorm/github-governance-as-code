@@ -6,8 +6,8 @@ detail behind each one.
 > **Plan note.** Everything below applies on any GitHub plan. What
 > changes by plan is which governance primitives exist at all — see
 > [`plan-requirements.md`](./plan-requirements.md). The short version:
-> the whole repo deploys on a free org, but rulesets there only cover
-> public repos and org rulesets aren't enforced until GitHub Team.
+> organization rulesets need GitHub Team, and on a free org rulesets only
+> cover public repos.
 
 ## 1. Drift detection
 
@@ -31,10 +31,11 @@ Two sources of drift, and they need different answers:
   (`tier`, `compliance_framework`) `org_actors`-only so their drift really
   does mean "something to investigate."
 
-There's a third thing that looks like drift and isn't: on a free org,
-org rulesets exist and match repos but don't enforce. `terraform plan`
-is clean, the API shows the ruleset, and pushes that should be blocked
-go through. That's a plan limit, not drift — check
+There's a third thing that looks like drift and isn't: on a free org, a
+repository ruleset on a *private* repo applies cleanly and protects
+nothing, because free orgs only apply rulesets to public repos.
+`terraform plan` is clean and the API shows the ruleset. That's a plan
+limit, not drift — check
 [`plan-requirements.md`](./plan-requirements.md) before you debug it as
 one.
 
@@ -97,20 +98,26 @@ surviving.
 ## 5. Plan limits are part of your threat model
 
 A governance control that exists but doesn't enforce is worse than no
-control, because it reads as covered on a dashboard. Two ways this
-happens in practice with GitHub:
+control, because it reads as covered on a dashboard.
 
-- **Free org, org-level ruleset.** Created, targeted, visible, not
-  enforced. Needs GitHub Team.
-- **Free org, private repo.** Rulesets don't apply to private repos on
-  free at all — and the repos you'd most want protected are the ones
-  most likely to be private.
+GitHub's plan limits come in two flavours, and only one of them is safe.
+Organization rulesets on a free org are the safe kind: they fail loudly
+at creation with a 403, so you find out immediately. The dangerous kind is
+a **repository ruleset on a private repo in a free org** — rulesets don't
+apply to private repos on free, so the ruleset is created, `terraform
+plan` stays clean, the API confirms it exists, and nothing is protected.
+No error anywhere. And the repos you'd most want protected are the ones
+most likely to be private.
 
-Neither shows up as a Terraform error or a non-empty plan, so neither
-gets caught by the drift detection in §1. If you're running governance
-on a free org, verify enforcement out-of-band: push something that
-should be rejected to a throwaway branch and confirm it actually is.
-Once per policy change is enough; the point is to not learn it during an
-audit.
+That silent case won't be caught by the drift detection in §1, because
+there's no drift to detect. Verify it out-of-band instead: push something
+that should be rejected and confirm it is. Once per policy change is
+enough; the point is not to learn it during an audit.
+
+The broader lesson is to find out where your plan's line falls before you
+design around it, and to trust the API over the UI when you do. The GitHub
+UI will let you start creating an organization ruleset on a free org; the
+API returns 403. We documented the permissive reading first and had to
+correct it.
 
 Full matrix: [`plan-requirements.md`](./plan-requirements.md).

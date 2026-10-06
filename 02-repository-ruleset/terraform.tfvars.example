@@ -1,7 +1,11 @@
 github_organization    = "my-org"
 repository_name        = "payments-service"
-required_review_count  = 2
-required_status_checks = ["ci/build", "ci/test", "security/sast"]
+# 1, not 2: module 03's regulated tier asks for 2, and the strictest value
+# wins across rulesets. A 2 here would hide that tier entirely.
+required_review_count = 1
+
+# security/sast is left to the regulated tier, for the same reason.
+required_status_checks = ["ci/build", "ci/test"]
 
 # Team slug, not a numeric ID — resolved by data.tf. The team must exist
 # already, so apply ../01-teams-and-permissions first. Omit for no bypass.

@@ -9,9 +9,16 @@ variable "repository_name" {
 }
 
 variable "required_review_count" {
-  description = "Number of approving reviews required before merge."
+  description = <<-DESC
+    Approving reviews required before merge.
+
+    Keep this at 1. Rules aggregate across every ruleset matching a ref and
+    the strictest value wins, so a 2 here would mask module 03's regulated
+    tier — which also asks for 2 — and reclassifying a repo would appear to
+    change nothing.
+  DESC
   type        = number
-  default     = 2
+  default     = 1
 }
 
 variable "required_status_checks" {

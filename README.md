@@ -26,35 +26,35 @@ way rather than living in one big apply.
 
 ## Prerequisites
 
-- **A GitHub organization on any plan, including free.** Every module
-  here applies cleanly against a free org — no Team, no Enterprise Cloud
-  subscription required. See [`docs/plan-requirements.md`](./docs/plan-requirements.md)
-  for the full matrix and the two caveats that matter (below).
+- **A GitHub organization.** Modules `00`, `01` and `02` run on a free
+  org. Module `03` — the core pattern — needs **GitHub Team** (or
+  Enterprise Cloud), because organization rulesets can't be created on a
+  free plan. See [`docs/plan-requirements.md`](./docs/plan-requirements.md)
+  for the full matrix.
 - Terraform >= 1.7
 - `integrations/github` provider ~> 6.0
 - Org owner access, or a GitHub App installation with the equivalent
   permissions, for initial apply
 - [GitHub CLI](https://cli.github.com/) (`gh`), for the live-demo scripts
 
-### The two caveats on a free org
+### What your plan changes
 
-1. **Demo repos must be public.** On a free plan, rulesets only apply to
-   public repositories. A ruleset on a private repo in a free org
-   applies successfully, shows up in the API, and protects nothing —
-   silently.
-2. **Org rulesets are created but not enforced.** Creating the
-   custom-property schema and the org rulesets in
-   `03-classification-and-org-rulesets` works on free; having those org
-   rulesets actually block a push requires GitHub Team. Repository-level
-   rulesets (module `02`) *are* enforced on free public repos, so
-   there's a working path to a real "your push was rejected" demo either
-   way.
+**Organization rulesets need GitHub Team.** On free, module `03` fails at
+apply with `403 Upgrade to GitHub Team to enable this feature`. Worth
+knowing precisely where the line falls, though: organization **custom
+properties** work fine on free, so you can build and use the whole
+classification layer there. It's only the org rulesets that consume those
+values that are gated. Free gets you classification without enforcement.
+
+**On free, rulesets only apply to public repos.** A repository ruleset on
+a private repo in a free org applies successfully, shows up in the API,
+and protects nothing — silently. Keep the demo repos public.
 
 Three things this repo deliberately doesn't use because they're
 Enterprise Cloud only: custom repository roles, the *restrict commit
 metadata* rules, and the *restrict branch names* rule.
-[`docs/plan-requirements.md`](./docs/plan-requirements.md) covers what
-to reach for instead.
+[`docs/plan-requirements.md`](./docs/plan-requirements.md) covers what to
+reach for instead.
 
 ## Authentication
 

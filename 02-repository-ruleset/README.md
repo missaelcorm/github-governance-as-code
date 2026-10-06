@@ -1,9 +1,16 @@
 # 02 — Repository-level ruleset
 
 Maps to **talk section 4**. One `github_repository_ruleset`, scoped to a
-single repo: required reviews, required status checks, bypass actors,
-linear history — the direct Terraform replacement for classic branch
-protection.
+single repo: required reviews, required status checks, bypass actors, no
+force-push or deletion — the direct Terraform replacement for classic
+branch protection.
+
+It's deliberately a *modest* baseline. Linear history, signed commits and
+code-owner review are left to module `03`'s regulated tier, and reviews are
+set to 1 rather than 2. Rules aggregate across every matching ruleset and
+the strictest value wins, so a maximally strict ruleset here would mask the
+org-level tiers completely — reclassify a repo and nothing visibly
+changes.
 
 ## Why this doesn't scale
 
@@ -40,12 +47,11 @@ one condition on free: they only apply to **public** repositories. On a
 free org, a ruleset on a private repo applies successfully and protects
 nothing.
 
-That makes this module the one place a free org gets genuinely *enforced*
-protection, which is worth knowing if you're running the talk's demo on
-free: org rulesets (module `03`) can be created there but aren't enforced
-until GitHub Team. Awkwardly, that means the module this talk argues
-against is the one that visibly blocks a push on free. It's still fine to
-show — being enforced was never the problem with it.
+That makes this module the only protection a free org gets at all: module
+`03`'s organization rulesets can't be created without GitHub Team.
+Awkwardly, the module this talk argues against is the only one that works
+on a free plan. It's still fine to show — scaling, not enforcement, was
+always the problem with it.
 
 Every rule used here works on any plan. See
 [`../docs/plan-requirements.md`](../docs/plan-requirements.md) for the

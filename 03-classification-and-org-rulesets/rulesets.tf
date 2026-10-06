@@ -8,9 +8,11 @@
 # The two rulesets are ADDITIVE, not alternatives: GitHub merges every ruleset
 # matching a ref and takes the most restrictive value per rule.
 #
-# PLAN NOTE: all of this applies on a free org — the rulesets are created and
-# target correctly. A free org just won't *enforce* them (needs GitHub Team),
-# and only applies rulesets to public repos. See ../docs/plan-requirements.md.
+# PLAN NOTE: organization rulesets require GitHub Team or Enterprise Cloud. On
+# a free org this file fails at apply with "403 Upgrade to GitHub Team to
+# enable this feature" — it's a hard refusal at creation, not a silent lack of
+# enforcement. properties.tf, by contrast, works fine on free. See
+# ../docs/plan-requirements.md.
 #
 # Every rule below works on every plan. Two that would fit here are Enterprise
 # Cloud only and left out on purpose:

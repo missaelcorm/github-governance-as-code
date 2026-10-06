@@ -20,17 +20,15 @@ variable "ruleset_enforcement" {
   description = <<-DESC
     Enforcement mode for the org rulesets in rulesets.tf.
 
-    "active" is correct on every plan and is what you want in
-    production. Note that on a FREE organization, org rulesets are
-    created and targeted correctly but are not actually enforced — that
-    requires GitHub Team. Setting this to "active" on free is still the
-    right thing to do: it's accurate about intent, and the rulesets
-    start enforcing the moment the org is upgraded.
+    "active" is what you want in production, and the default.
 
-    "disabled" is available on any plan if you want the rulesets to
-    exist without applying. "evaluate" (dry-run: log what would have
-    been blocked, block nothing) is GitHub Enterprise Cloud only and
-    will be rejected on other plans.
+    "disabled" makes the rulesets exist without applying — useful while
+    iterating. "evaluate" (dry run: log what would have been blocked,
+    block nothing) is GitHub Enterprise Cloud only and is rejected on
+    other plans.
+
+    None of these help on a free org: org rulesets can't be created there
+    at any enforcement level.
 
     See ../docs/plan-requirements.md.
   DESC

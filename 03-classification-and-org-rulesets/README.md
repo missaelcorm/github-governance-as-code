@@ -20,25 +20,26 @@ not a new Terraform module.
 
 ## What you need to run this
 
-A GitHub organization on **any plan, including free**. Both halves of
-this module apply successfully on a free org: custom properties are a
-free-plan feature, and org rulesets can be created and targeted on free
-too.
+**GitHub Team or Enterprise Cloud.** This is the one module with a paid
+prerequisite: organization rulesets can't be created on a free plan, and
+`rulesets.tf` fails at apply with
 
-The one thing free doesn't give you is **enforcement** of those org
-rulesets — that's GitHub Team. On free they exist, they match the right
-repos, and `show-rules.sh` lists them; they just don't block
-anything. Rulesets on a free org also only apply to **public** repos, so
-make the demo repo public.
+```
+403 Upgrade to GitHub Team to enable this feature.
+```
 
-`ruleset_enforcement` is exposed as a variable if you need to set the
-rulesets to `disabled` while iterating. Leave it `active` otherwise,
-including on free — it's accurate about intent, and the rulesets begin
-enforcing the moment the org is upgraded.
+The line falls in an interesting place, though. `properties.tf` —
+organization custom properties — works on a **free** org. So you can
+define and use the classification schema for nothing; it's only the
+rulesets that act on those values that need Team. Free gets you
+classification without enforcement, which is the half with no security
+benefit on its own.
 
-See [`../docs/plan-requirements.md`](../docs/plan-requirements.md) for
-the full matrix, including which ruleset rules are Enterprise-only and
-what to use instead.
+`ruleset_enforcement` is exposed if you want the rulesets `disabled`
+while iterating. `evaluate` (dry run) is Enterprise Cloud only.
+
+See [`../docs/plan-requirements.md`](../docs/plan-requirements.md) for the
+full matrix and the Enterprise-only rules this module avoids.
 
 ## Prerequisites
 

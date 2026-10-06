@@ -10,7 +10,7 @@ repository_visibility = "public"
 # PR forever instead of failing it.
 seed_ci_workflow = true
 
-# Leave empty on the first apply. After 01-teams-and-permissions has
-# created the team, set this and apply again — a CODEOWNERS file naming a
-# team that doesn't exist yet is silently ignored by GitHub.
-# codeowners = ["@my-org/security"]
+# Fine to set now, before the team exists: CODEOWNERS is just a file, and
+# GitHub flags the entry as invalid until the team exists with write access
+# to this repo. It starts working on its own once 01 has run.
+# codeowners = ["@my-org/platform-engineering"]

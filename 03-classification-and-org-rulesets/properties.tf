@@ -5,11 +5,11 @@
 # — they match on these property values instead. Tag a repo correctly and
 # it inherits the right protections automatically.
 #
-# PLAN NOTE: organization custom properties are available on every
-# GitHub plan, free included — defining this schema and assigning values
-# needs no Team or Enterprise subscription. It's the *enforcement* half
-# (rulesets.tf) that has plan constraints. See
-# ../docs/plan-requirements.md.
+# PLAN NOTE: organization custom properties work on every GitHub plan, free
+# included — this file applies against a free org with no complaint. The
+# enforcement half (rulesets.tf) does NOT: org rulesets need GitHub Team. So a
+# free org can classify every repo it owns and do nothing with the result.
+# See ../docs/plan-requirements.md.
 #
 # NOTE ON PROVIDER VERSIONS: custom-property support landed comparatively
 # recently in integrations/github and its resource/attribute names have

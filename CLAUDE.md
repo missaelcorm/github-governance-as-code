@@ -25,7 +25,12 @@ resource type:
   repository; keep it that way.
 - `01-teams-and-permissions/` — teams, membership, repo access grants
 - `02-repository-ruleset/` — a single-repo ruleset, the "doesn't scale"
-  example, intentionally
+  example, intentionally. Deliberately a **modest** baseline: 1 approval,
+  no linear history, no signed commits, no code-owner review. Don't
+  tighten it. Rules aggregate across all matching rulesets and the
+  strictest wins, so a strict ruleset here masks module `03`'s tiers
+  entirely and reclassifying a repo appears to do nothing — which is the
+  demo's whole payoff.
 - `03-classification-and-org-rulesets/` — **the core pattern**: org
   custom-property schema (`properties.tf`) + org rulesets targeting repos
   by those properties (`rulesets.tf`) + a commented-out example of setting
@@ -67,12 +72,28 @@ Secrets, because `%%bash` can't reach that API. Don't add Python wrappers,
   - A required status check that never reports blocks a PR on "Expected"
     forever instead of failing it. Changing a required context in `02`/`03`
     means changing the matching job `name:` in `00-setup`'s CI workflow.
-- **Everything must stay deployable on a free org.** Verified against a
-  real one: teams, custom properties and rulesets all apply. Two limits to
-  keep documented wherever relevant — on free, rulesets only apply to
-  **public** repos, and org rulesets are created but **not enforced**
-  (needs Team). Both fail silently: clean plan, ruleset present, nothing
-  protected.
+  - The rules API reports a ruleset's `ruleset_source` as the org or repo
+    that owns it, **not** the ruleset's name. `scripts/show-rules.sh` has
+    to look names up by `ruleset_id` or its output can't distinguish the
+    baseline tier from the regulated one.
+  - A CODEOWNERS entry needs the named team to exist **and** to have write
+    access to the repo. Missing either, GitHub reports the entry as invalid
+    (`/repos/{owner}/{repo}/codeowners/errors`) and
+    `require_code_owner_review` is never satisfiable. The file itself can be
+    committed before any of that is true — it's just a file, so `00-setup`
+    writes it in one pass and it starts working once `01` has run.
+- **Plan requirements, verified against a real free org:** modules `00`,
+  `01` and `02` apply on free. Module `03` does not — org rulesets return
+  `403 Upgrade to GitHub Team to enable this feature`. Org **custom
+  properties** (`properties.tf`) *do* work on free, so the line falls
+  between classification and enforcement, not around module `03` as a
+  whole. Keep that distinction; it's the useful part.
+- Also keep documented: on free, rulesets only apply to **public** repos.
+  Unlike the 403, that one fails silently — clean plan, ruleset present,
+  nothing protected.
+- Don't trust the GitHub UI about what a plan allows; it let us create an
+  org ruleset on free that the API refuses. Verify with `terraform apply`
+  before documenting a plan claim.
 - Don't introduce Enterprise-Cloud-only features: custom repository roles,
   the *restrict commit metadata* rules, *restrict branch names*,
   `enforcement = "evaluate"`. `docs/plan-requirements.md` is the single

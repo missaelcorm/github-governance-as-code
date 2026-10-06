@@ -54,9 +54,12 @@ on them. On a shared org that isn't demo cleanup.
 
 ## On a free org
 
-§3 reads your org's plan and says what to expect. On free you'll see the
-rules applying to the repo change when its classification changes — which is
-the demo — but you won't see an org ruleset block anything, because free orgs
-don't enforce them. Run §6 to also deploy the repository-level ruleset, which
-*is* enforced on free public repos, if you want something visibly blocked.
-Detail in [`../docs/plan-requirements.md`](../docs/plan-requirements.md).
+**The notebook needs GitHub Team to get past §5.** Organization rulesets
+can't be created on a free plan — module `03` fails with `403 Upgrade to
+GitHub Team to enable this feature`.
+
+§3 reads your org's plan and warns you before anything is created. On free,
+everything up to and including the custom-property schema still applies, so
+you can show the classification layer; you just can't show it driving
+enforcement. Detail in
+[`../docs/plan-requirements.md`](../docs/plan-requirements.md).
